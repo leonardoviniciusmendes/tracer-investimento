@@ -21,15 +21,19 @@ O MVP do RadarBolsa organiza oportunidades priorizadas por score, setor e tese r
 |   `-- mysql/init/001_create_schema.sql
 |-- src/
 |   |-- backend/RadarBolsa.Api
+|   |-- backend/RadarBolsa.Application
+|   |-- backend/RadarBolsa.Domain
+|   |-- backend/RadarBolsa.Infrastructure
 |   `-- frontend
 |-- docker-compose.yml
-`-- RadarBolsa.slnx
+`-- README.md
 ```
 
 ## Entregas desta etapa
-- API inicial com `/health` e `/api/opportunities`
+- API estruturada em Clean Architecture simples com `/health` e `/api/opportunities`
 - Frontend Vue com painel demonstrativo
 - Script inicial de banco para ativos monitorados e oportunidades
+- Seed inicial de oportunidades no MySQL para validacao local
 - Docker Compose com MySQL e API
 
 ## Como executar
@@ -61,7 +65,9 @@ O `docker-compose.yml` define o ambiente local inicial do projeto com:
 - `api`: backend ASP.NET Core exposto em `http://localhost:8081`
 - rede dedicada `radarbolsa-network` para comunicacao entre os servicos
 
-Nesta etapa, o `docker compose` sobe MySQL e API. O frontend roda localmente via Vite.
+Nesta etapa, o `docker compose` sobe MySQL e API com seed inicial de oportunidades. O frontend roda localmente via Vite.
+
+Os scripts em `infra/mysql/init` sao executados automaticamente na primeira inicializacao de um volume novo do MySQL.
 
 ## Validacao rapida
 ```powershell
@@ -78,7 +84,7 @@ curl.exe -i http://localhost:8081/health
 - `GET /api/opportunities?sector=Energia`
 
 ## Proximas etapas
-1. Conectar a API ao MySQL.
-2. Substituir dados mockados por repositorio real.
-3. Adicionar cadastro e monitoramento de ativos.
+1. Adicionar seed inicial de oportunidades no MySQL.
+2. Criar cadastro e monitoramento de ativos.
+3. Expandir filtros e ordenacao da API.
 4. Evoluir para ingestao automatizada e alertas.

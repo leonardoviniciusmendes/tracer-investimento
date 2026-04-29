@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<GetOpportunitiesUseCase>();
         services.AddScoped<CreateTrackedAssetUseCase>();
         services.AddScoped<GetTrackedAssetsUseCase>();
+        services.AddScoped<GetTrackedAssetByTickerUseCase>();
 
         return services;
     }

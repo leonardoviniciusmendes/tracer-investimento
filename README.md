@@ -82,6 +82,9 @@ curl.exe -i http://localhost:8081/health
 - `GET /api/opportunities`
 - `GET /api/opportunities?minScore=80`
 - `GET /api/opportunities?sector=Energia`
+- `GET /api/tracked-assets`
+- `GET /api/tracked-assets/{ticker}`
+- `POST /api/tracked-assets`
 
 ## Proximas etapas
 1. Adicionar seed inicial de oportunidades no MySQL.

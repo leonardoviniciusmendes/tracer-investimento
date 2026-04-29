@@ -220,6 +220,12 @@ body::before {
   font-weight: 700;
 }
 
+.secondary-chip {
+  background: rgba(187, 107, 43, 0.08);
+  border-color: rgba(187, 107, 43, 0.18);
+  color: var(--highlight);
+}
+
 .primary-button,
 .ghost-button {
   border-radius: 999px;
@@ -342,6 +348,115 @@ body::before {
   border-color: rgba(187, 107, 43, 0.25);
 }
 
+.success-banner {
+  color: #1f5c37;
+  background: rgba(34, 132, 83, 0.12);
+  border-color: rgba(34, 132, 83, 0.22);
+}
+
+.signals-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.signals-form {
+  display: grid;
+  gap: 16px;
+}
+
+.signals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.signal-note textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  padding: 14px 16px;
+  font: inherit;
+  outline: none;
+  resize: vertical;
+}
+
+.signal-note textarea:focus {
+  border-color: rgba(30, 109, 90, 0.5);
+  box-shadow: 0 0 0 4px rgba(30, 109, 90, 0.08);
+}
+
+.signals-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.signals-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.signals-feedback {
+  min-height: 0;
+}
+
+.signals-list {
+  display: grid;
+  gap: 14px;
+}
+
+.signal-card {
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 252, 246, 0.96));
+  border: 1px solid rgba(80, 58, 39, 0.1);
+}
+
+.signal-topline,
+.signal-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.signal-topline {
+  align-items: start;
+}
+
+.signal-type {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.76rem;
+  background: rgba(30, 109, 90, 0.08);
+  color: var(--accent);
+}
+
+.signal-type[data-type="sell"] {
+  background: rgba(187, 107, 43, 0.12);
+  color: #9c4f17;
+}
+
+.signal-type[data-type="watch"] {
+  background: rgba(119, 88, 40, 0.12);
+  color: #7c5a19;
+}
+
+.signal-card h3 {
+  margin: 6px 0 0;
+  font-size: 1.22rem;
+}
+
+.signal-card p {
+  margin: 12px 0 0;
+}
+
 @media (max-width: 900px) {
   .hero,
   .content-grid {
@@ -371,6 +486,18 @@ body::before {
   .filters-actions,
   .filters-summary {
     justify-content: stretch;
+  }
+
+  .signals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signal-topline,
+  .signal-stats,
+  .signals-actions,
+  .signals-meta {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .primary-button,

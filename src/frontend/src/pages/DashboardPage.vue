@@ -3,6 +3,7 @@ import { computed, onMounted, watch } from "vue";
 import HeroOverview from "../components/HeroOverview.vue";
 import OpportunityFiltersPanel from "../components/OpportunityFiltersPanel.vue";
 import OpportunityListPanel from "../components/OpportunityListPanel.vue";
+import ManualSignalsPanel from "../components/ManualSignalsPanel.vue";
 import RoadmapPanel from "../components/RoadmapPanel.vue";
 import { useDashboardStore } from "../stores/useDashboardStore";
 
@@ -63,6 +64,7 @@ function resetFilters() {
           :is-loading="isLoading"
           :error-message="errorMessage"
         />
+        <ManualSignalsPanel />
       </div>
       <RoadmapPanel />
     </section>

@@ -18,7 +18,10 @@ O MVP do RadarBolsa organiza oportunidades priorizadas por score, setor e tese r
 |-- docs/
 |   `-- arquitetura.md
 |-- infra/
-|   `-- mysql/init/001_create_schema.sql
+|   `-- mysql/init/
+|       |-- 001_create_schema.sql
+|       |-- 002_seed_opportunities.sql
+|       `-- 003_seed_manual_signals.sql
 |-- src/
 |   |-- backend/RadarBolsa.Api
 |   |-- backend/RadarBolsa.Application
@@ -31,9 +34,11 @@ O MVP do RadarBolsa organiza oportunidades priorizadas por score, setor e tese r
 
 ## Entregas desta etapa
 - API estruturada em Clean Architecture simples com `/health` e `/api/opportunities`
-- Frontend Vue com painel demonstrativo
-- Script inicial de banco para ativos monitorados e oportunidades
-- Seed inicial de oportunidades no MySQL para validacao local
+- API de ativos monitorados em `/api/tracked-assets`
+- API de sinais manuais em `/api/signals`
+- Frontend Vue com painel demonstrativo e ingestao manual de sinais
+- Script inicial de banco para ativos monitorados, oportunidades e sinais
+- Seed inicial de oportunidades e sinais no MySQL para validacao local
 - Docker Compose com MySQL e API
 
 ## Como executar
@@ -85,6 +90,8 @@ curl.exe -i http://localhost:8081/health
 - `GET /api/tracked-assets`
 - `GET /api/tracked-assets/{ticker}`
 - `POST /api/tracked-assets`
+- `GET /api/signals`
+- `POST /api/signals`
 
 ## Contrato de oportunidades
 - `GET /api/opportunities` retorna um array JSON simples para consumo direto do frontend.
@@ -121,7 +128,6 @@ curl.exe -i http://localhost:8081/health
   - `GET /api/opportunities?minUpside=20&maxUpside=10` retorna `400`
 
 ## Proximas etapas
-1. Adicionar seed inicial de oportunidades no MySQL.
-2. Criar cadastro e monitoramento de ativos.
-3. Expandir filtros e ordenacao da API.
-4. Evoluir para ingestao automatizada e alertas.
+1. Evoluir ingestao automatizada de sinais.
+2. Ampliar a camada analitica com watchlists e alertas.
+3. Preparar autenticacao e segregacao por usuario.

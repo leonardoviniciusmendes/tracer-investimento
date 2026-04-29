@@ -56,6 +56,13 @@ docker compose up --build
 
 Nesta etapa, o `docker compose` sobe MySQL e API. O frontend roda localmente via Vite.
 
+## Validacao rapida
+```powershell
+dotnet build .\src\backend\RadarBolsa.Api\RadarBolsa.Api.csproj -v minimal
+Set-Location .\src\frontend
+npm run build
+```
+
 ## Endpoints iniciais
 - `GET /health`
 - `GET /api/opportunities`

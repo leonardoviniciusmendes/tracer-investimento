@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
+COPY ["src/backend/RadarBolsa.Domain/RadarBolsa.Domain.csproj", "src/backend/RadarBolsa.Domain/"]
+COPY ["src/backend/RadarBolsa.Application/RadarBolsa.Application.csproj", "src/backend/RadarBolsa.Application/"]
+COPY ["src/backend/RadarBolsa.Infrastructure/RadarBolsa.Infrastructure.csproj", "src/backend/RadarBolsa.Infrastructure/"]
 COPY ["src/backend/RadarBolsa.Api/RadarBolsa.Api.csproj", "src/backend/RadarBolsa.Api/"]
 RUN dotnet restore "src/backend/RadarBolsa.Api/RadarBolsa.Api.csproj"
 

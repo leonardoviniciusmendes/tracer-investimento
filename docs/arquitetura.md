@@ -26,7 +26,14 @@ Sistema para rastrear e analisar oportunidades de investimento, com foco em um M
 - `src/backend/RadarBolsa.Application`: casos de uso e contratos da aplicacao.
 - `src/backend/RadarBolsa.Infrastructure`: persistencia MySQL e integracoes.
 - `src/backend/RadarBolsa.Api`: API ASP.NET Core com endpoints e composicao.
-- `src/frontend`: aplicacao Vue 3 para o painel inicial.
+- src/frontend/radar-bolsa-web: aplicação Vue 3 do painel inicial.
+ - src/frontend/radar-bolsa-web/src/pages: páginas/telas principais.
+ - src/frontend/radar-bolsa-web/src/components: componentes reutilizáveis.
+ - src/frontend/radar-bolsa-web/src/services: comunicação com APIs.
+ - src/frontend/radar-bolsa-web/src/router: rotas da aplicação.
+ - src/frontend/radar-bolsa-web/src/stores: estado global, se necessário.
+ - src/frontend/radar-bolsa-web/src/assets: imagens, ícones e estilos.
+ - src/frontend/radar-bolsa-web/src/styles: estilos globais.
 - `infra/mysql`: scripts de banco para ambiente local.
 - `docker-compose.yml`: orquestracao dos servicos base.
 - `README.md`: guia rapido do projeto.
@@ -41,3 +48,11 @@ Sistema para rastrear e analisar oportunidades de investimento, com foco em um M
 ## Proxima Etapa Recomendada
 - Popular oportunidades no MySQL com seed inicial.
 - Adicionar ingestao de ativos monitorados e filtros por perfil.
+
+
+## Estilo Layout
+Dashboard financeiro moderno
+Tema: dark mode
+Layout: cards + tabelas + gráficos
+Cores: verde, vermelho, amarelo e cinza
+Estilo: SaaS limpo, simples e profissional

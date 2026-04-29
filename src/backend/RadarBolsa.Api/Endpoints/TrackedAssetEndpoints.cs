@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using RadarBolsa.Api.Contracts;
 using RadarBolsa.Api.Mappings;
 using RadarBolsa.Application.TrackedAssets;
@@ -51,16 +52,29 @@ public static class TrackedAssetEndpoints
         return TypedResults.Ok(trackedAsset.ToResponse());
     }
 
-    private static async Task<Created<TrackedAssetResponse>> CreateTrackedAsset(
+    private static async Task<Results<Created<TrackedAssetResponse>, ValidationProblem, ProblemHttpResult>> CreateTrackedAsset(
         CreateTrackedAssetRequest request,
         CreateTrackedAssetUseCase useCase,
         CancellationToken cancellationToken)
     {
-        var trackedAsset = await useCase.ExecuteAsync(
+        var result = await useCase.ExecuteAsync(
             request.ToInput(),
             cancellationToken);
 
-        var response = trackedAsset.ToResponse();
+        if (result.Status == CreateTrackedAssetStatus.ValidationError)
+        {
+            return TypedResults.ValidationProblem(result.Errors);
+        }
+
+        if (result.Status == CreateTrackedAssetStatus.Conflict)
+        {
+            return TypedResults.Problem(
+                title: "Tracked asset already exists",
+                detail: result.ConflictMessage,
+                statusCode: StatusCodes.Status409Conflict);
+        }
+
+        var response = result.TrackedAsset!.ToResponse();
 
         return TypedResults.Created(
             $"/api/tracked-assets/{response.Ticker}",

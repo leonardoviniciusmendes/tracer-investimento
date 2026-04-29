@@ -33,7 +33,14 @@ internal sealed class MySqlTrackedAssetRepository(
         insertCommand.Parameters.AddWithValue("@companyName", input.CompanyName);
         insertCommand.Parameters.AddWithValue("@sector", input.Sector);
 
-        await insertCommand.ExecuteNonQueryAsync(cancellationToken);
+        try
+        {
+            await insertCommand.ExecuteNonQueryAsync(cancellationToken);
+        }
+        catch (MySqlException exception) when (exception.Number == 1062)
+        {
+            throw new TrackedAssetAlreadyExistsException(input.Ticker);
+        }
 
         return await GetByIdAsync(
             insertCommand.LastInsertedId,

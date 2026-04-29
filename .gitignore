@@ -1,0 +1,17 @@
+.vs/
+.vscode/
+.idea/
+
+bin/
+obj/
+
+node_modules/
+dist/
+
+.nuget/
+.dotnet/
+.npm-cache/
+.templateengine/
+
+.env
+.DS_Store

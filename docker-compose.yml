@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: radarbolsa-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: radarbolsa
+      MYSQL_USER: radarbolsa
+      MYSQL_PASSWORD: radarbolsa
+    ports:
+      - "3306:3306"
+    volumes:
+      - radarbolsa_mysql_data:/var/lib/mysql
+      - ./infra/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+  api:
+    build:
+      context: .
+      dockerfile: src/backend/RadarBolsa.Api/Dockerfile
+    container_name: radarbolsa-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__RadarBolsa: Server=mysql;Port=3306;Database=radarbolsa;User=radarbolsa;Password=radarbolsa;
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+volumes:
+  radarbolsa_mysql_data:

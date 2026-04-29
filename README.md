@@ -86,6 +86,40 @@ curl.exe -i http://localhost:8081/health
 - `GET /api/tracked-assets/{ticker}`
 - `POST /api/tracked-assets`
 
+## Contrato de oportunidades
+- `GET /api/opportunities` retorna um array JSON simples para consumo direto do frontend.
+- Ordenacao atual: `score` decrescente e, em caso de empate, `capturedAt` mais recente primeiro.
+- Quando nenhum item atende aos filtros, a API responde `200 OK` com array vazio.
+- Quando parametros invalidos sao informados, a API responde `400` com `ValidationProblem`.
+- Parametros de query do MVP:
+  - `minScore`: inteiro opcional para retornar apenas oportunidades com score minimo.
+  - `sector`: texto opcional para filtrar por setor, sem diferenciar maiusculas e minusculas.
+  - `minUpside`: decimal opcional para filtrar upside minimo em percentual.
+  - `maxUpside`: decimal opcional para filtrar upside maximo em percentual.
+  - `sortBy`: texto opcional com `score` ou `upside`. O padrao atual e `score`.
+  - `sortDirection`: texto opcional com `desc` ou `asc`. O padrao atual e `desc`.
+- Campos de resposta por item:
+  - `ticker`
+  - `companyName`
+  - `sector`
+  - `currentPrice`
+  - `targetPrice`
+  - `score`
+  - `thesis`
+  - `capturedAt`
+  - `upsidePercent`
+- Exemplos:
+  - `GET /api/opportunities`
+  - `GET /api/opportunities?minScore=80`
+  - `GET /api/opportunities?sector=Financeiro`
+  - `GET /api/opportunities?minScore=75&sector=Energia`
+  - `GET /api/opportunities?minUpside=10`
+  - `GET /api/opportunities?minUpside=10&maxUpside=16`
+  - `GET /api/opportunities?sortBy=upside`
+  - `GET /api/opportunities?sector=Financeiro&sortBy=upside&sortDirection=asc`
+  - `GET /api/opportunities?minScore=abc` retorna `400`
+  - `GET /api/opportunities?minUpside=20&maxUpside=10` retorna `400`
+
 ## Proximas etapas
 1. Adicionar seed inicial de oportunidades no MySQL.
 2. Criar cadastro e monitoramento de ativos.

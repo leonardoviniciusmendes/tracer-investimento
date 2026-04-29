@@ -16,13 +16,20 @@ public static class OpportunityEndpoints
         return app;
     }
 
-    private static async Task<Ok<OpportunityResponse[]>> GetOpportunities(
+    private static async Task<Results<Ok<OpportunityResponse[]>, ValidationProblem>> GetOpportunities(
         [AsParameters] GetOpportunitiesRequest request,
         GetOpportunitiesUseCase useCase,
         CancellationToken cancellationToken)
     {
+        var validationResult = request.ValidateAndMap();
+
+        if (!validationResult.IsValid)
+        {
+            return TypedResults.ValidationProblem(validationResult.Errors);
+        }
+
         var opportunities = await useCase.ExecuteAsync(
-            request.ToFilters(),
+            validationResult.Filters!,
             cancellationToken);
 
         return TypedResults.Ok(

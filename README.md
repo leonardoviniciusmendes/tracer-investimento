@@ -89,6 +89,8 @@ curl.exe -i http://localhost:8081/health
 ## Contrato de oportunidades
 - `GET /api/opportunities` retorna um array JSON simples para consumo direto do frontend.
 - Ordenacao atual: `score` decrescente e, em caso de empate, `capturedAt` mais recente primeiro.
+- Quando nenhum item atende aos filtros, a API responde `200 OK` com array vazio.
+- Quando parametros invalidos sao informados, a API responde `400` com `ValidationProblem`.
 - Parametros de query do MVP:
   - `minScore`: inteiro opcional para retornar apenas oportunidades com score minimo.
   - `sector`: texto opcional para filtrar por setor, sem diferenciar maiusculas e minusculas.
@@ -115,6 +117,8 @@ curl.exe -i http://localhost:8081/health
   - `GET /api/opportunities?minUpside=10&maxUpside=16`
   - `GET /api/opportunities?sortBy=upside`
   - `GET /api/opportunities?sector=Financeiro&sortBy=upside&sortDirection=asc`
+  - `GET /api/opportunities?minScore=abc` retorna `400`
+  - `GET /api/opportunities?minUpside=20&maxUpside=10` retorna `400`
 
 ## Proximas etapas
 1. Adicionar seed inicial de oportunidades no MySQL.

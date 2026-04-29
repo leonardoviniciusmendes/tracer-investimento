@@ -4,6 +4,7 @@ using RadarBolsa.Application.Abstractions.Persistence;
 using RadarBolsa.Infrastructure.Health;
 using RadarBolsa.Infrastructure.Persistence;
 using RadarBolsa.Infrastructure.Persistence.Opportunities;
+using RadarBolsa.Infrastructure.Persistence.TrackedAssets;
 
 namespace RadarBolsa.Infrastructure;
 
@@ -14,6 +15,7 @@ public static class DependencyInjection
         services.AddSingleton<IRadarBolsaDbConnectionFactory, RadarBolsaDbConnectionFactory>();
         services.AddSingleton<IDatabaseHealthChecker, DatabaseHealthChecker>();
         services.AddScoped<IOpportunityReadRepository, MySqlOpportunityReadRepository>();
+        services.AddScoped<ITrackedAssetRepository, MySqlTrackedAssetRepository>();
 
         return services;
     }

@@ -15,5 +15,6 @@ app.UseCors(CorsPolicies.Frontend);
 
 app.MapHealthEndpoints();
 app.MapOpportunityEndpoints();
+app.MapTrackedAssetEndpoints();
 
 app.Run();

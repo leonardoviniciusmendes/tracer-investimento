@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using RadarBolsa.Api.Contracts;
 using RadarBolsa.Api.Mappings;
 using RadarBolsa.Application.Opportunities;
@@ -16,14 +17,12 @@ public static class OpportunityEndpoints
     }
 
     private static async Task<Ok<OpportunityResponse[]>> GetOpportunities(
-        int? minScore,
-        string? sector,
+        [AsParameters] GetOpportunitiesRequest request,
         GetOpportunitiesUseCase useCase,
         CancellationToken cancellationToken)
     {
         var opportunities = await useCase.ExecuteAsync(
-            minScore,
-            sector,
+            request.ToFilters(),
             cancellationToken);
 
         return TypedResults.Ok(

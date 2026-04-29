@@ -1,4 +1,5 @@
 using RadarBolsa.Api.Contracts;
+using RadarBolsa.Application.Opportunities;
 using RadarBolsa.Domain.Opportunities;
 using RadarBolsa.Domain.TrackedAssets;
 using RadarBolsa.Application.TrackedAssets;
@@ -7,6 +8,14 @@ namespace RadarBolsa.Api.Mappings;
 
 internal static class ApiContractMappings
 {
+    public static OpportunityFilters ToFilters(
+        this GetOpportunitiesRequest request) =>
+        new(
+            request.MinScore,
+            string.IsNullOrWhiteSpace(request.Sector)
+                ? null
+                : request.Sector.Trim());
+
     public static OpportunityResponse ToResponse(this Opportunity opportunity) =>
         new(
             opportunity.Ticker,

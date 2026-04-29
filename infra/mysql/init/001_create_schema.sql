@@ -24,3 +24,15 @@ CREATE TABLE IF NOT EXISTS opportunities (
     CONSTRAINT fk_opportunities_tracked_assets
         FOREIGN KEY (tracked_asset_id) REFERENCES tracked_assets (id)
 );
+
+CREATE TABLE IF NOT EXISTS manual_signals (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    tracked_asset_id BIGINT NOT NULL,
+    signal_type VARCHAR(16) NOT NULL,
+    confidence INT NOT NULL,
+    note VARCHAR(500) NOT NULL,
+    captured_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_manual_signals_tracked_assets
+        FOREIGN KEY (tracked_asset_id) REFERENCES tracked_assets (id)
+);

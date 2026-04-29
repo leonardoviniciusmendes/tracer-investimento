@@ -1,7 +1,9 @@
 using System.Globalization;
 using RadarBolsa.Api.Contracts;
 using RadarBolsa.Application.Opportunities;
+using RadarBolsa.Application.Signals;
 using RadarBolsa.Domain.Opportunities;
+using RadarBolsa.Domain.Signals;
 using RadarBolsa.Domain.TrackedAssets;
 using RadarBolsa.Application.TrackedAssets;
 
@@ -77,6 +79,26 @@ internal static class ApiContractMappings
             trackedAsset.Sector,
             trackedAsset.IsActive,
             trackedAsset.CreatedAt);
+
+    public static CreateManualSignalInput ToInput(
+        this CreateManualSignalRequest request) =>
+        new(
+            0,
+            request.Ticker,
+            request.SignalType,
+            request.Confidence,
+            request.Note,
+            request.CapturedAt ?? DateTimeOffset.UtcNow);
+
+    public static ManualSignalResponse ToResponse(this ManualSignal manualSignal) =>
+        new(
+            manualSignal.Id,
+            manualSignal.Ticker,
+            manualSignal.CompanyName,
+            manualSignal.SignalType,
+            manualSignal.Confidence,
+            manualSignal.Note,
+            manualSignal.CapturedAt);
 
     private static int? ParseNullableInt(
         string? value,

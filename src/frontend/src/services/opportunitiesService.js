@@ -33,8 +33,27 @@ export const fallbackOpportunities = [
   },
 ];
 
-export async function fetchTopOpportunities() {
-  const response = await fetch(`${apiBaseUrl}/api/opportunities?minScore=70`);
+function buildQuery(filters = {}) {
+  const params = new URLSearchParams();
+
+  if (filters.minScore !== "" && filters.minScore != null) {
+    params.set("minScore", String(filters.minScore));
+  }
+
+  if (filters.sector) {
+    params.set("sector", filters.sector);
+  }
+
+  return params.toString();
+}
+
+export async function fetchTopOpportunities(filters = {}) {
+  const query = buildQuery(filters);
+  const endpoint = query
+    ? `${apiBaseUrl}/api/opportunities?${query}`
+    : `${apiBaseUrl}/api/opportunities`;
+
+  const response = await fetch(endpoint);
 
   if (!response.ok) {
     throw new Error("Falha ao carregar oportunidades.");

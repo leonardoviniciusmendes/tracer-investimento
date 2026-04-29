@@ -6,6 +6,10 @@ defineProps({
     type: Array,
     required: true,
   },
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
 });
 </script>
 
@@ -20,7 +24,12 @@ defineProps({
     </div>
 
     <div class="opportunity-list">
+      <div v-if="isLoading" class="empty-state">Atualizando oportunidades...</div>
+      <div v-else-if="!opportunities.length" class="empty-state">
+        Nenhuma oportunidade encontrada para os filtros atuais.
+      </div>
       <OpportunityCard
+        v-else
         v-for="opportunity in opportunities"
         :key="opportunity.ticker"
         :opportunity="opportunity"

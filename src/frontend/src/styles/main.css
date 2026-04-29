@@ -131,6 +131,11 @@ body::before {
   grid-template-columns: 1.4fr 0.8fr;
 }
 
+.stack {
+  display: grid;
+  gap: 24px;
+}
+
 .panel {
   padding: 28px;
 }
@@ -151,6 +156,82 @@ body::before {
 .opportunity-list {
   display: grid;
   gap: 16px;
+}
+
+.filters-panel {
+  position: relative;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 8px 0 20px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.field span {
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  padding: 14px 16px;
+  font: inherit;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: rgba(30, 109, 90, 0.5);
+  box-shadow: 0 0 0 4px rgba(30, 109, 90, 0.08);
+}
+
+.filters-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.primary-button,
+.ghost-button {
+  border-radius: 999px;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: white;
+}
+
+.ghost-button {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text);
+}
+
+.primary-button:disabled,
+.ghost-button:disabled,
+.field input:disabled,
+.field select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .opportunity-card {
@@ -210,6 +291,14 @@ body::before {
   gap: 14px;
 }
 
+.empty-state {
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.5);
+}
+
 @media (max-width: 900px) {
   .hero,
   .content-grid {
@@ -230,5 +319,9 @@ body::before {
   .hero-copy,
   .panel {
     padding: 24px;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
   }
 }

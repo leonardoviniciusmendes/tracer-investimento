@@ -291,12 +291,28 @@ body::before {
   gap: 14px;
 }
 
-.empty-state {
+.status-banner {
   padding: 18px;
   border-radius: 18px;
-  border: 1px dashed var(--line);
+  border: 1px solid var(--line);
+  font-weight: 600;
+}
+
+.loading-banner {
   color: var(--muted);
   background: rgba(255, 255, 255, 0.5);
+}
+
+.empty-banner {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.5);
+  border-style: dashed;
+}
+
+.error-banner {
+  color: #7d3d1f;
+  background: rgba(187, 107, 43, 0.12);
+  border-color: rgba(187, 107, 43, 0.25);
 }
 
 @media (max-width: 900px) {

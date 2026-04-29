@@ -10,6 +10,10 @@ defineProps({
     type: Boolean,
     required: true,
   },
+  errorMessage: {
+    type: String,
+    required: true,
+  },
 });
 </script>
 
@@ -24,16 +28,22 @@ defineProps({
     </div>
 
     <div class="opportunity-list">
-      <div v-if="isLoading" class="empty-state">Atualizando oportunidades...</div>
-      <div v-else-if="!opportunities.length" class="empty-state">
+      <div v-if="isLoading" class="status-banner loading-banner">
+        Atualizando oportunidades...
+      </div>
+      <div v-else-if="errorMessage" class="status-banner error-banner">
+        {{ errorMessage }}
+      </div>
+      <div v-else-if="!opportunities.length" class="status-banner empty-banner">
         Nenhuma oportunidade encontrada para os filtros atuais.
       </div>
-      <OpportunityCard
-        v-else
-        v-for="opportunity in opportunities"
-        :key="opportunity.ticker"
-        :opportunity="opportunity"
-      />
+      <template v-else>
+        <OpportunityCard
+          v-for="opportunity in opportunities"
+          :key="opportunity.ticker"
+          :opportunity="opportunity"
+        />
+      </template>
     </div>
   </article>
 </template>

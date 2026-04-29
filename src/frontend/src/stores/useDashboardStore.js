@@ -8,6 +8,7 @@ export function useDashboardStore() {
   const opportunities = ref([...fallbackOpportunities]);
   const dataSource = ref("dados de demonstracao");
   const isLoading = ref(false);
+  const errorMessage = ref("");
   const filters = reactive({
     sector: "",
     minScore: 70,
@@ -29,6 +30,7 @@ export function useDashboardStore() {
 
   async function loadOpportunities() {
     isLoading.value = true;
+    errorMessage.value = "";
 
     try {
       const data = await fetchTopOpportunities(filters);
@@ -39,9 +41,13 @@ export function useDashboardStore() {
         return;
       }
 
-      dataSource.value = "dados de demonstracao";
+      opportunities.value = [];
+      dataSource.value = "API local";
     } catch {
+      opportunities.value = [...fallbackOpportunities];
       dataSource.value = "dados de demonstracao";
+      errorMessage.value =
+        "Nao foi possivel carregar a API local. Exibindo dados de demonstracao.";
     } finally {
       isLoading.value = false;
     }
@@ -51,6 +57,7 @@ export function useDashboardStore() {
     opportunities,
     dataSource,
     isLoading,
+    errorMessage,
     averageScore,
     filters,
     sectors,

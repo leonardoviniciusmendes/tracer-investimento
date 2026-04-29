@@ -10,7 +10,10 @@ const {
   opportunities,
   dataSource,
   isLoading,
+  errorMessage,
   averageScore,
+  filters,
+  sectors,
   loadOpportunities,
 } = useDashboardStore();
 
@@ -52,6 +55,7 @@ function resetFilters() {
         <OpportunityListPanel
           :opportunities="opportunities"
           :is-loading="isLoading"
+          :error-message="errorMessage"
         />
       </div>
       <RoadmapPanel />

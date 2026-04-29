@@ -1,3 +1,6 @@
+using MySqlConnector;
+using Microsoft.AspNetCore.Http.HttpResults;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -10,6 +13,8 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddSingleton<DatabaseConnectionProbe>();
 
 var app = builder.Build();
 
@@ -29,7 +34,7 @@ var opportunities = new[]
         capturedAt),
     new OpportunityResponse(
         "ITUB4",
-        "Itaú Unibanco PN",
+        "Itau Unibanco PN",
         "Financeiro",
         34.15m,
         39.60m,
@@ -56,15 +61,7 @@ var opportunities = new[]
         capturedAt)
 };
 
-app.MapGet("/health", () =>
-{
-    return TypedResults.Ok(new
-    {
-        status = "ok",
-        service = "radarbolsa-api",
-        timestamp = DateTimeOffset.UtcNow
-    });
-});
+app.MapGet("/health", GetHealth);
 
 app.MapGet("/api/opportunities", (int? minScore, string? sector) =>
 {
@@ -85,6 +82,28 @@ app.MapGet("/api/opportunities", (int? minScore, string? sector) =>
 })
 .WithName("GetOpportunities");
 
+static async Task<Microsoft.AspNetCore.Http.HttpResults.Results<Ok<HealthResponse>, ProblemHttpResult>> GetHealth(
+    DatabaseConnectionProbe databaseConnectionProbe,
+    CancellationToken cancellationToken)
+{
+    var databaseCheck = await databaseConnectionProbe.CheckAsync(cancellationToken);
+
+    if (!databaseCheck.IsHealthy)
+    {
+        return TypedResults.Problem(
+            title: "Database connectivity failed",
+            detail: databaseCheck.ErrorMessage,
+            statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+
+    return TypedResults.Ok(
+        new HealthResponse(
+            "ok",
+            "radarbolsa-api",
+            "ok",
+            DateTimeOffset.UtcNow));
+}
+
 app.Run();
 
 internal sealed record OpportunityResponse(
@@ -101,4 +120,44 @@ internal sealed record OpportunityResponse(
         CurrentPrice == 0
             ? 0
             : Math.Round(((TargetPrice - CurrentPrice) / CurrentPrice) * 100, 2);
+}
+
+internal sealed record HealthResponse(
+    string Status,
+    string Service,
+    string Database,
+    DateTimeOffset Timestamp);
+
+internal sealed class DatabaseConnectionProbe(IConfiguration configuration)
+{
+    private readonly string _connectionString =
+        configuration.GetConnectionString("RadarBolsa")
+        ?? throw new InvalidOperationException(
+            "Connection string 'RadarBolsa' was not configured.");
+
+    public async Task<DatabaseHealthResult> CheckAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync(cancellationToken);
+
+            await using var command = new MySqlCommand("SELECT 1;", connection);
+            await command.ExecuteScalarAsync(cancellationToken);
+
+            return DatabaseHealthResult.Healthy();
+        }
+        catch (Exception exception)
+        {
+            return DatabaseHealthResult.Unhealthy(exception.Message);
+        }
+    }
+}
+
+internal sealed record DatabaseHealthResult(bool IsHealthy, string? ErrorMessage)
+{
+    public static DatabaseHealthResult Healthy() => new(true, null);
+
+    public static DatabaseHealthResult Unhealthy(string errorMessage) =>
+        new(false, errorMessage);
 }

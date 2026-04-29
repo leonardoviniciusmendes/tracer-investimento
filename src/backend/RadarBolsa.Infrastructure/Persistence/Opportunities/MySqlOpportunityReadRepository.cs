@@ -13,6 +13,14 @@ internal sealed class MySqlOpportunityReadRepository(
         OpportunityFilters filters,
         CancellationToken cancellationToken)
     {
+        const string upsideExpression =
+            """
+            CASE
+                WHEN o.current_price = 0 THEN 0
+                ELSE ((o.target_price - o.current_price) / o.current_price) * 100
+            END
+            """;
+
         var sql = new StringBuilder(
             """
             SELECT
@@ -39,7 +47,26 @@ internal sealed class MySqlOpportunityReadRepository(
             sql.AppendLine(" AND LOWER(ta.sector) = LOWER(@sector)");
         }
 
-        sql.AppendLine(" ORDER BY o.score DESC, o.captured_at DESC;");
+        if (filters.MinUpside.HasValue)
+        {
+            sql.AppendLine($" AND {upsideExpression} >= @minUpside");
+        }
+
+        if (filters.MaxUpside.HasValue)
+        {
+            sql.AppendLine($" AND {upsideExpression} <= @maxUpside");
+        }
+
+        var sortColumn = filters.SortBy == OpportunitySortBy.Upside
+            ? upsideExpression
+            : "o.score";
+
+        var sortDirection = filters.SortDirection == SortDirection.Asc
+            ? "ASC"
+            : "DESC";
+
+        sql.AppendLine(
+            $" ORDER BY {sortColumn} {sortDirection}, o.score DESC, o.captured_at DESC;");
 
         await using var connection = connectionFactory.CreateConnection();
         await connection.OpenAsync(cancellationToken);
@@ -54,6 +81,16 @@ internal sealed class MySqlOpportunityReadRepository(
         if (!string.IsNullOrWhiteSpace(filters.Sector))
         {
             command.Parameters.AddWithValue("@sector", filters.Sector);
+        }
+
+        if (filters.MinUpside.HasValue)
+        {
+            command.Parameters.AddWithValue("@minUpside", filters.MinUpside.Value);
+        }
+
+        if (filters.MaxUpside.HasValue)
+        {
+            command.Parameters.AddWithValue("@maxUpside", filters.MaxUpside.Value);
         }
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);

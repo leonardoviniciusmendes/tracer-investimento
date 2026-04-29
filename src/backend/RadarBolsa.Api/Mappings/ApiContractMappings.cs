@@ -14,7 +14,11 @@ internal static class ApiContractMappings
             request.MinScore,
             string.IsNullOrWhiteSpace(request.Sector)
                 ? null
-                : request.Sector.Trim());
+                : request.Sector.Trim(),
+            request.MinUpside,
+            request.MaxUpside,
+            ParseSortBy(request.SortBy),
+            ParseSortDirection(request.SortDirection));
 
     public static OpportunityResponse ToResponse(this Opportunity opportunity) =>
         new(
@@ -42,4 +46,18 @@ internal static class ApiContractMappings
             trackedAsset.Sector,
             trackedAsset.IsActive,
             trackedAsset.CreatedAt);
+
+    private static OpportunitySortBy ParseSortBy(string? sortBy) =>
+        sortBy?.Trim().ToLowerInvariant() switch
+        {
+            "upside" => OpportunitySortBy.Upside,
+            _ => OpportunitySortBy.Score
+        };
+
+    private static SortDirection ParseSortDirection(string? sortDirection) =>
+        sortDirection?.Trim().ToLowerInvariant() switch
+        {
+            "asc" => SortDirection.Asc,
+            _ => SortDirection.Desc
+        };
 }

@@ -92,6 +92,10 @@ curl.exe -i http://localhost:8081/health
 - Parametros de query do MVP:
   - `minScore`: inteiro opcional para retornar apenas oportunidades com score minimo.
   - `sector`: texto opcional para filtrar por setor, sem diferenciar maiusculas e minusculas.
+  - `minUpside`: decimal opcional para filtrar upside minimo em percentual.
+  - `maxUpside`: decimal opcional para filtrar upside maximo em percentual.
+  - `sortBy`: texto opcional com `score` ou `upside`. O padrao atual e `score`.
+  - `sortDirection`: texto opcional com `desc` ou `asc`. O padrao atual e `desc`.
 - Campos de resposta por item:
   - `ticker`
   - `companyName`
@@ -107,6 +111,10 @@ curl.exe -i http://localhost:8081/health
   - `GET /api/opportunities?minScore=80`
   - `GET /api/opportunities?sector=Financeiro`
   - `GET /api/opportunities?minScore=75&sector=Energia`
+  - `GET /api/opportunities?minUpside=10`
+  - `GET /api/opportunities?minUpside=10&maxUpside=16`
+  - `GET /api/opportunities?sortBy=upside`
+  - `GET /api/opportunities?sector=Financeiro&sortBy=upside&sortDirection=asc`
 
 ## Proximas etapas
 1. Adicionar seed inicial de oportunidades no MySQL.

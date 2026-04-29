@@ -54,6 +54,13 @@ npm run dev
 docker compose up --build
 ```
 
+Se quiser sobrescrever portas ou credenciais do ambiente local, use `.env` com base em `.env.example`.
+
+O `docker-compose.yml` define o ambiente local inicial do projeto com:
+- `mysql`: banco MySQL 8.4 com volume persistente, scripts em `infra/mysql/init` e acesso host em `localhost:3307`
+- `api`: backend ASP.NET Core exposto em `http://localhost:8081`
+- rede dedicada `radarbolsa-network` para comunicacao entre os servicos
+
 Nesta etapa, o `docker compose` sobe MySQL e API. O frontend roda localmente via Vite.
 
 ## Validacao rapida
@@ -61,6 +68,7 @@ Nesta etapa, o `docker compose` sobe MySQL e API. O frontend roda localmente via
 dotnet build .\src\backend\RadarBolsa.Api\RadarBolsa.Api.csproj -v minimal
 Set-Location .\src\frontend
 npm run build
+curl.exe -i http://localhost:8081/health
 ```
 
 ## Endpoints iniciais

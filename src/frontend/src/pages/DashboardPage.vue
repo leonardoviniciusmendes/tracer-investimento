@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import HeroOverview from "../components/HeroOverview.vue";
 import OpportunityFiltersPanel from "../components/OpportunityFiltersPanel.vue";
 import OpportunityListPanel from "../components/OpportunityListPanel.vue";
@@ -16,6 +16,11 @@ const {
   sectors,
   loadOpportunities,
 } = useDashboardStore();
+
+const activeFilterSummary = computed(() => {
+  const sectorLabel = filters.sector ? filters.sector : "Todos os setores";
+  return `${sectorLabel} | Score >= ${filters.minScore}`;
+});
 
 onMounted(loadOpportunities);
 
@@ -47,6 +52,7 @@ function resetFilters() {
           :filters="filters"
           :sectors="sectors"
           :is-loading="isLoading"
+          :summary="activeFilterSummary"
           @update:sector="filters.sector = $event"
           @update:minScore="filters.minScore = $event"
           @apply="loadOpportunities"

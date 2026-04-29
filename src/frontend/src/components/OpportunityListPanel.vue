@@ -39,9 +39,10 @@ defineProps({
       </div>
       <template v-else>
         <OpportunityCard
-          v-for="opportunity in opportunities"
+          v-for="(opportunity, index) in opportunities"
           :key="opportunity.ticker"
           :opportunity="opportunity"
+          :index="index"
         />
       </template>
     </div>

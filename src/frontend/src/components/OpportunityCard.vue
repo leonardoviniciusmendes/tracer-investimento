@@ -4,11 +4,16 @@ defineProps({
     type: Object,
     required: true,
   },
+  index: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
 });
 </script>
 
 <template>
-  <article class="opportunity-card">
+  <article class="opportunity-card" :style="{ '--card-index': index }">
     <div class="opportunity-topline">
       <div>
         <span class="ticker">{{ opportunity.ticker }}</span>

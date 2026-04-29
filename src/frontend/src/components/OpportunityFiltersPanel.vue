@@ -12,6 +12,10 @@ defineProps({
     type: Boolean,
     required: true,
   },
+  summary: {
+    type: String,
+    required: true,
+  },
 });
 
 defineEmits(["update:sector", "update:minScore", "apply", "reset"]);
@@ -63,6 +67,10 @@ defineEmits(["update:sector", "update:minScore", "apply", "reset"]);
       <button class="primary-button" type="button" :disabled="isLoading" @click="$emit('apply')">
         {{ isLoading ? "Atualizando..." : "Aplicar filtros" }}
       </button>
+    </div>
+
+    <div class="filters-summary" aria-live="polite">
+      <span class="summary-chip">{{ summary }}</span>
     </div>
   </article>
 </template>
